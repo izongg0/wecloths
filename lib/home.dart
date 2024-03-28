@@ -102,52 +102,73 @@ class ClothsListPage extends GetView<HomeController> {
   List<ClothsModel> clothsList;
   @override
   Widget build(BuildContext context) {
-    if (clothsList.isEmpty) {
-      return Center(
-        child: Text(
-          "No Cloths",
-          style: TextStyle(color: Colors.grey[300], fontSize: 30),
-        ),
-      );
-    } else {
-      return SingleChildScrollView(
-        child: Column(
-          children: [
-            Obx(
-              () => Container(
-                padding: EdgeInsets.symmetric(horizontal: 6),
-                width: Get.width,
-                height: Get.height,
-                child: GridView(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisSpacing: 10,
-                      childAspectRatio: 0.53, crossAxisCount: 2),
-                  children: List.generate(clothsList.length, (index) {
-                    return Container(
-                      child: ClothItem(
-                        clothsdata: clothsList[index],
+    return Obx(() => Container(
+          child: clothsList.isEmpty
+              ? Center(
+                  child: Text(
+                    "No Cloths",
+                    style: TextStyle(color: Colors.grey[300], fontSize: 30),
+                  ),
+                )
+              : SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Obx(
+                        () => Container(
+                          padding: EdgeInsets.symmetric(horizontal: 6),
+                          width: Get.width,
+                          height: Get.height,
+                          child: GridView(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisSpacing: 10,
+                                    childAspectRatio: 0.53,
+                                    crossAxisCount: 2),
+                            children: List.generate(clothsList.length, (index) {
+                              return ClothItem(
+                                clothsdata: clothsList[index],
+                              );
+                            }),
+                          ),
+                        ),
                       ),
-                    );
-                  }),
+                    ],
+                  ),
                 ),
-              ),
-
-              // Wrap(
-              //       direction: Axis.horizontal,
-              //       alignment: WrapAlignment.start,
-              //       spacing: 18.w, // 좌우 간격
-              //       runSpacing: 10, // 상하 간격
-              //       children: List.generate(clothsList.length, (index) {
-              //         return ClothItem(
-              //           clothsdata: clothsList[index],
-              //         );
-              //       }),
-              //     )
-            ),
-          ],
-        ),
-      );
-    }
+        ));
+    // if (clothsList.isEmpty) {
+    //   return Center(
+    //     child: Text(
+    //       "No Cloths",
+    //       style: TextStyle(color: Colors.grey[300], fontSize: 30),
+    //     ),
+    //   );
+    // } else {
+    //   return SingleChildScrollView(
+    //     child: Column(
+    //       children: [
+    //         Obx(
+    //           () => Container(
+    //             padding: EdgeInsets.symmetric(horizontal: 6),
+    //             width: Get.width,
+    //             height: Get.height,
+    //             child: GridView(
+    //               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+    //                   crossAxisSpacing: 10,
+    //                   childAspectRatio: 0.53,
+    //                   crossAxisCount: 2),
+    //               children: List.generate(clothsList.length, (index) {
+    //                 return ClothItem(
+    //                   clothsdata: clothsList[index],
+    //                 );
+    //               }),
+    //             ),
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    //   );
+    // }
   }
 }
 
