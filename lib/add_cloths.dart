@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:wecloths/cloths_detail.dart';
 import 'package:wecloths/controller/add_cloths_controller.dart';
 
 class AddCloths extends StatefulWidget {
@@ -19,9 +21,10 @@ class _AddClothsState extends State<AddCloths> {
   final ImagePicker picker = ImagePicker(); //ImagePicker 초기화
   final controller = Get.put(AddClothController());
   // String? selectedItem;
-void unfocusKeyboard() {
+  void unfocusKeyboard() {
     FocusManager.instance.primaryFocus?.unfocus();
   }
+
   //이미지를 가져오는 함수
   Future getImage(ImageSource imageSource) async {
     //pickedFile에 ImagePicker로 가져온 이미지가 담긴다.
@@ -114,11 +117,22 @@ void unfocusKeyboard() {
                               ),
                             ),
                             if (controller.image.value != null)
-                              Container(
-                                width: 120.w,
-                                height: 200.h,
-                                color: Colors.black,
-                                child: Image.file(controller.image.value!,fit: BoxFit.cover,),
+                              GestureDetector(
+                                onTap: () {
+                                  List<int> imageBytes =
+                                      controller.image.value!.readAsBytesSync();
+                                  String base64Image = base64Encode(imageBytes);
+                                  Get.to(ClothsView(image: base64Image));
+                                },
+                                child: Container(
+                                  width: 120.w,
+                                  height: 200.h,
+                                  color: Colors.black,
+                                  child: Image.file(
+                                    controller.image.value!,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                               )
                             else
                               Container(
@@ -155,11 +169,9 @@ void unfocusKeyboard() {
                 Container(
                     height: 50.h,
                     child: TextField(
-                      
                       controller: controller.inputTitleController,
                       decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(horizontal: 11),
-      
+                          contentPadding: EdgeInsets.symmetric(horizontal: 11),
                           hintText: "제품명",
                           border: OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.grey)),
@@ -176,11 +188,9 @@ void unfocusKeyboard() {
                 Container(
                     height: 50.h,
                     child: TextField(
-                      
                       controller: controller.inputPriceController,
                       decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(horizontal: 11),
-      
+                          contentPadding: EdgeInsets.symmetric(horizontal: 11),
                           hintText: "가격",
                           border: OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.grey)),
@@ -199,8 +209,7 @@ void unfocusKeyboard() {
                     child: TextField(
                       controller: controller.inputLinkController,
                       decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(horizontal: 11),
-      
+                          contentPadding: EdgeInsets.symmetric(horizontal: 11),
                           hintText: "사이트 주소",
                           border: OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.grey)),
@@ -220,8 +229,8 @@ void unfocusKeyboard() {
                       controller: controller.inputDesController,
                       maxLines: 7,
                       decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(horizontal: 11,vertical: 10),
-      
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 11, vertical: 10),
                           hintText: "설명",
                           border: OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.grey)),

@@ -16,12 +16,11 @@ class ClothsController extends GetxController {
               okfunc: () async {
                 await _postHelper.deleteItem(clothId);
                 // onInit();
-
-                Get.find<HomeController>().onInit();
+                HomeController.to.onInit();
                 Get.back();
                 Get.back();
-                // Get.snackbar('삭제되었습니다!', '',
-                //     snackPosition: SnackPosition.BOTTOM);
+                Get.snackbar('삭제되었습니다!', '',
+                    snackPosition: SnackPosition.BOTTOM,duration: Duration(seconds: 1));
               },
               nofunc: () async {
                 Get.back();

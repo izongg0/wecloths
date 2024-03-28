@@ -7,6 +7,9 @@ import 'package:wecloths/model/ClothsModel.dart';
 import 'package:wecloths/repo/post_helper.dart';
 
 class HomeController extends GetxController {
+
+    static HomeController get to => Get.find();
+
   RxList<ClothsModel> total = RxList<ClothsModel>();
 
   RxList<ClothsModel> outer = RxList<ClothsModel>();

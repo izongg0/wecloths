@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -112,17 +113,37 @@ class ClothsListPage extends GetView<HomeController> {
       return SingleChildScrollView(
         child: Column(
           children: [
-            Obx(() => Wrap(
-                  direction: Axis.horizontal,
-                  alignment: WrapAlignment.start,
-                  spacing: 18.w, // 좌우 간격
-                  runSpacing: 10, // 상하 간격
+            Obx(
+              () => Container(
+                padding: EdgeInsets.symmetric(horizontal: 6),
+                width: Get.width,
+                height: Get.height,
+                child: GridView(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisSpacing: 10,
+                      childAspectRatio: 0.53, crossAxisCount: 2),
                   children: List.generate(clothsList.length, (index) {
-                    return ClothItem(
-                      clothsdata: clothsList[index],
+                    return Container(
+                      child: ClothItem(
+                        clothsdata: clothsList[index],
+                      ),
                     );
                   }),
-                )),
+                ),
+              ),
+
+              // Wrap(
+              //       direction: Axis.horizontal,
+              //       alignment: WrapAlignment.start,
+              //       spacing: 18.w, // 좌우 간격
+              //       runSpacing: 10, // 상하 간격
+              //       children: List.generate(clothsList.length, (index) {
+              //         return ClothItem(
+              //           clothsdata: clothsList[index],
+              //         );
+              //       }),
+              //     )
+            ),
           ],
         ),
       );
@@ -140,7 +161,7 @@ class ClothItem extends GetView<HomeController> {
         Get.to(ClothsDetail(clothsData: clothsdata));
       },
       child: Container(
-        width: Get.width / 2.2,
+        // width: Get.width / 2.2,
         // height: 200.h,
         child: Column(
           children: [
@@ -159,6 +180,8 @@ class ClothItem extends GetView<HomeController> {
               height: 10.h,
             ),
             Text(
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               clothsdata.title!,
               style: TextStyle(fontWeight: FontWeight.w700, fontSize: 17),
             ),

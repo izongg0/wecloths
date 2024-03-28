@@ -21,35 +21,13 @@ class AddClothController extends GetxController {
 
   final _postHelper = DBHelper();
 
-  // void onInit() async {
-  //   await divideCloths();
-  //   super.onInit();
-  // }
-
-  // Future<void> divideCloths() async {
-  //   total.value = await _postHelper.getItems();
-  //   // print(total[0].category);
-  //   for (var item in total) {
-  //     if (item.category == '아우터') {
-  //       outer.add(item);
-  //     } else if (item.category == '상의') {
-  //       top.add(item);
-  //     } else if (item.category == '하의') {
-  //       bottom.add(item);
-  //     } else if (item.category == '신발') {
-  //       shoes.add(item);
-  //     } else if (item.category == 'etc') {
-  //       etc.add(item);
-  //     }
-  //   }
-  //   // print(top);
-  // }
-
   Future<void> addCloth(BuildContext context) async {
     if (image.value == null) {
-      Get.snackbar('이미지를 선택해주세요.', '', snackPosition: SnackPosition.BOTTOM,duration: Duration(seconds: 1));
+      Get.snackbar('이미지를 선택해주세요.', '',
+          snackPosition: SnackPosition.BOTTOM, duration: Duration(seconds: 1));
     } else if (selectedItem.value == "") {
-      Get.snackbar('카테고리를 선택해주세요.', '', snackPosition: SnackPosition.BOTTOM,duration: Duration(seconds: 1));
+      Get.snackbar('카테고리를 선택해주세요.', '',
+          snackPosition: SnackPosition.BOTTOM, duration: Duration(seconds: 1));
     } else {
       List<int> imageBytes = image.value!.readAsBytesSync();
       String base64Image = base64Encode(imageBytes);
@@ -65,10 +43,11 @@ class AddClothController extends GetxController {
         var insertid = await _postHelper.insertItem(addClothData);
         print(insertid);
         print("성공");
-        onInit();
-        Get.find<HomeController>().onInit();
+        HomeController.to.onInit();
         Get.back();
-        Get.snackbar('생성되었습니다!', '', snackPosition: SnackPosition.BOTTOM,duration: Duration(seconds: 1));
+        Get.snackbar('생성되었습니다!', '',
+            snackPosition: SnackPosition.BOTTOM,
+            duration: Duration(seconds: 1));
 
         // Navigator.pop(context);
       } catch (e) {

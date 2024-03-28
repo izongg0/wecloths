@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wecloths/controller/cloth_controller.dart';
 import 'package:wecloths/model/ClothsModel.dart';
@@ -20,6 +21,7 @@ class ClothsDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
           title: SvgPicture.asset(
             "assets/appbarlogo.svg",
@@ -57,13 +59,20 @@ class ClothsDetail extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  width: 330.w,
-                  height: 500.h,
-                  color: Colors.white,
-                  child: Image.memory(
-                    base64Decode(clothsData.img!),
-                    fit: BoxFit.cover,
+                GestureDetector(
+                  onTap: () {
+                    Get.to(ClothsView(
+                      image: clothsData.img!,
+                    ));
+                  },
+                  child: Container(
+                    width: 330.w,
+                    height: 500.h,
+                    color: Colors.white,
+                    child: Image.memory(
+                      base64Decode(clothsData.img!),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -130,6 +139,9 @@ class ClothsDetail extends StatelessWidget {
                             onPressed: () {
                               Clipboard.setData(
                                   ClipboardData(text: clothsData.link!));
+                              Get.snackbar('복사되었습니다!', '',
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  duration: Duration(seconds: 1));
                             },
                             child: Text("copy")),
                       )
@@ -148,5 +160,40 @@ class ClothsDetail extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class ClothsView extends StatelessWidget {
+  ClothsView({super.key, required this.image});
+  String image;
+  @override
+  Widget build(BuildContext context) {
+    return Stack(children: [
+      Positioned(
+        child: PhotoView(
+          imageProvider: MemoryImage(
+            base64Decode(image),
+          ),
+          minScale: PhotoViewComputedScale.contained,
+          initialScale: PhotoViewComputedScale.contained,
+          backgroundDecoration: BoxDecoration(
+            color: Colors.black,
+          ),
+        ),
+      ),
+      Positioned(
+        top: 50,
+        right: 15,
+        child: GestureDetector(
+            onTap: () {
+              Get.back();
+            },
+            child: Icon(
+              Icons.close,
+              color: Colors.grey,
+              size: 35.w,
+            )),
+      ),
+    ]);
   }
 }
